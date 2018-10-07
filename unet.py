@@ -1,11 +1,8 @@
 import torch
 from torch import nn
 import pretrainedmodels
-#from pretrainedmodels.models.dpn import *
 from collections import OrderedDict
 import torch.utils.model_zoo as model_zoo
-
-
 
 pretrained_settings = {
     'dpn68': {
@@ -418,7 +415,7 @@ class UnetDPN(nn.Module):
         self.dec0 = DecoderBlock(in_chs, num_filters * 8 * 2, num_filters * 8)
         self.pool = nn.MaxPool2d(2, 2)
 
-        self.final = nn.Conv2d(num_filters, num_classes, kernel_size=1)
+        self.decfinal = nn.Conv2d(num_filters, num_classes, kernel_size=1)
 
     def forward(self, input):
         pt1 = self.ptfeat1(input)
@@ -434,6 +431,6 @@ class UnetDPN(nn.Module):
         dc4 = self.dec4(pt1, dec3)
 
         dc_native = self.dec5(dc4)
-        final = self.final(dc_native)
+        final = self.decfinal(dc_native)
 
         return final

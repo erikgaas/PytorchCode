@@ -21,7 +21,7 @@ def fit(epochs, model, loss_fn, opt, train_dl, valid_dl, metric=None) -> None:
     "Train `model` for `epochs` with `loss_fun` and `optim`"
     for epoch in range(epochs):
         
-        tq = tqdm.tqdm(total=(len(train_dl) * train_dl.batch_size))
+        tq = tqdm(total=(len(train_dl) * train_dl.batch_size))
         tq.set_description('Epoch {}'.format(epoch))
         
         model.train()

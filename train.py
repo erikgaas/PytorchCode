@@ -2,8 +2,7 @@ import torch
 from torch.autograd import Variable as V
 import torch.nn.functional as F
 import numpy as np
-import tqdm
-
+from tqdm import tqdm_notebook as tqdm
 
 def loss_batch(model, xb, yb, loss_fn, metric=None, opt=None):
     "Calculate loss for the batch `xb,yb` and backprop with `opt`"

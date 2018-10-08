@@ -38,5 +38,6 @@ def fit(epochs, model, loss_fn, opt, train_dl, valid_dl, metric=None) -> None:
             losses,nums = zip(*[loss_batch(model, xb, yb, loss_fn)
                                 for xb,yb in valid_dl])
         val_loss = np.sum(np.multiply(losses,nums)) / np.sum(nums)
+        print(f'Val Loss {val_loss}')
 
     tq.close()

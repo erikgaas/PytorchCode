@@ -31,8 +31,19 @@ class SaltDataset(Dataset):
         res = self.tfms(image=img, mask=mask)
         return res['image'], res['mask']
 
-class SaltDatasetArrays(TensorDataset):
-    pass
+class SaltDatasetArrays(Dataset):
+    def __init__(self, img_tensor, mask_tensor, tfms):
+        self.img = img_tensor
+        self.mask = mask_tensor
+        self.tfms = tfms
+        assert self.img.shape[0] == self.mask.shape[0]
+
+    def __getitem__(self, i):
+        img = self.img[i]
+        mask = self.mask[i]
+
+        res = self.tfms(image=img, mask=mask)
+        return res['image'], res['mask']
 
 
 def create_arrays(img_paths, mask_paths, size=None):

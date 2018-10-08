@@ -41,6 +41,9 @@ class SaltDatasetArrays(Dataset):
         self.tfms = tfms
         assert self.img.shape[0] == self.mask.shape[0]
 
+    def __len__(self):
+        return self.img.shape[0]
+
     def __getitem__(self, i):
         img = self.img[i]
         mask = self.mask[i]

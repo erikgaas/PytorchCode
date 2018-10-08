@@ -4,6 +4,9 @@ import numpy as np
 import torch
 
 from albumentations import Resize, NoOp, Normalize, Compose
+from albumentations import Flip, RandomRotate90
+
+dihedral = Compose(Flip(), RandomRotate90())
 
 def open_image(img_path, tfm=NoOp()):
     img = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB)
@@ -60,8 +63,9 @@ def get_dls(train_img_paths,
             batch_size=1, num_workers=1, pin_memory=False):
     trn_img, trn_mask = create_arrays(train_img_paths, train_mask_paths, size)
     val_img, val_mask = create_arrays(val_img_paths, val_mask_paths, size)
-    trn_ds = SaltDatasetArrays(trn_img, trn_mask)
-    val_ds = SaltDatasetArrays(val_img, val_mask)
+
+    trn_ds = SaltDatasetArrays(trn_img, trn_mask, tfms=dihedral)
+    val_ds = SaltDatasetArrays(val_img, val_mask, tfms=NoOp())
 
     trn_dl = DataLoader(trn_ds, num_workers=num_workers, batch_size=batch_size, pin_memory=pin_memory)
     val_dl = DataLoader(val_ds, num_workers=num_workers, batch_size=batch_size, pin_memory=pin_memory)

@@ -49,7 +49,7 @@ class SaltDatasetArrays(Dataset):
         mask = self.mask[i]
 
         res = self.tfms(image=img, mask=mask)
-        return res['image'], res['mask']
+        return Torch.Tensor(res['image']), Torch.Tensor(res['mask'])
 
 
 def create_arrays(img_paths, mask_paths, size=None):
@@ -57,7 +57,7 @@ def create_arrays(img_paths, mask_paths, size=None):
     tfm = Compose([tfm, Normalize()])
     imgs = np.stack([open_image(i, tfm=tfm) for i in img_paths])
     masks = np.stack([open_mask(i, tfm=tfm) for i in mask_paths])
-    return torch.Tensor(imgs), torch.Tensor(masks)
+    return imgs, masks
 
 def get_dls(train_img_paths,
             train_mask_paths,

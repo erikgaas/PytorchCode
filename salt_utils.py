@@ -12,8 +12,9 @@ def get_paths(dataset_path):
     return np.array(train_images), np.array(train_masks)
 
 
-def get_tfms(size, val=False):
-    augs = [Resize(size, size), Normalize()]
+def get_tfms(size=None, val=False):
+    augs = [Resize(size,size)] if size is not None else []
+    augs = augs + [Normalize()]
     if val is False:
         augs += [RandomRotate90(), Flip()]
     return Compose(augs)

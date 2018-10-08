@@ -24,10 +24,10 @@ def fit(epochs, model, loss_fn, opt, train_dl, valid_dl, metric=None) -> None:
         tq = tqdm(total=(len(train_dl) * train_dl.batch_size))
         tq.set_description('Epoch {}'.format(epoch))
         
-        model.train()
+        #model.train()
         for xb,yb in train_dl:
-            xb = V(xb, requires_grad=False)
-            loss, yb_len, _ = loss_batch(model, xb, yb, loss_fn, opt=opt, metric=metric)
+            xb = torch.autograd.Variable(xb).cuda()
+            loss, yb_len, _ = loss_batch(model, xb, yb.cuda(), loss_fn, opt=opt, metric=metric)
             tq.update(yb_len)
             
             tq.set_postfix(loss='{:.5f}'.format(loss))
